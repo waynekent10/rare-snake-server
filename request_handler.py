@@ -3,6 +3,7 @@ import json
 from views.user import create_user, login_user
 from views.comment_requests import *
 from views.post_requests import *
+from views.user_requests import *
 
 
 class HandleRequests(BaseHTTPRequestHandler):
@@ -71,6 +72,12 @@ class HandleRequests(BaseHTTPRequestHandler):
                     response = get_single_post(id)
                 else:
                     response = get_all_posts()
+                
+            if resource == "users":
+                if id is not None:
+                    response = get_single_user(id)
+                else:
+                    response = get_all_users()
 
         else:         
             (resource, query, value) = self.parse_url()
@@ -99,6 +106,8 @@ class HandleRequests(BaseHTTPRequestHandler):
             response = json.dumps(create_comment(post_body))
         if resource == "posts":
             response = json.dumps(create_post(post_body))
+        if resource == "users":
+            response = json.dumps(create_user(post_body))
 
         self.wfile.write(response.encode())
 
@@ -116,6 +125,8 @@ class HandleRequests(BaseHTTPRequestHandler):
             success = update_comment(id, post_body)
         if resource == "posts":
             success = update_post(id, post_body)
+        if resource == "users":
+            success = update_user(id, post_body)
             
         if success:
             self._set_headers(204)
@@ -134,6 +145,8 @@ class HandleRequests(BaseHTTPRequestHandler):
             delete_comment(id)
         if resource == "posts":
             delete_post(id)
+        if resource == "users":
+            delete_user(id)
 
 
 def main():
