@@ -16,7 +16,7 @@ def get_all_posts():
             p.publication_date,
             p.image_url,
             p.content
-        FROM post p
+        FROM Posts p
         """)
         
         posts = []
@@ -26,7 +26,8 @@ def get_all_posts():
         for row in dataset:
             post = Post(row['id'], row['user_id'], row['category_id'], row['title'], row['publication_date'], row['image_url'], row['content'])
 
-        posts.append(post.__dict__)
+            posts.append(post.__dict__)
+
     return posts
 
 def get_single_post(id):
@@ -44,7 +45,7 @@ def get_single_post(id):
             p.publication_date,
             p.image_url,
             p.content
-        FROM post p
+        FROM Posts p
         WHERE p.id = ?
         """, (id, ))
                 
@@ -75,7 +76,7 @@ def delete_post(id):
       
         db_cursor = conn.cursor()
         db_cursor.execute("""
-        DELETE FROM post
+        DELETE FROM Post
         WHERE id = ?
         """, (id, ))
 
@@ -117,7 +118,7 @@ def get_posts_by_user(user_id):
             p.publication_date,
             p.image_url,
             p.content
-        FROM post p
+        FROM Post p
         WHERE p.user_id = ?
         """, (user_id, ))
         
@@ -127,5 +128,5 @@ def get_posts_by_user(user_id):
         for row in dataset:
             post = Post(row['id'], row['user_id'], row['category_id'], row['title'], row['publication_date'], row['image_url'], row['content'])
 
-        posts.append(post.__dict__)
+            posts.append(post.__dict__)
     return posts

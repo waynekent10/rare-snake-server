@@ -57,7 +57,7 @@ class HandleRequests(BaseHTTPRequestHandler):
         response = {}
         
         if '?' not in self.path:
-            resource, id = self.parse_url()
+            ( resource, id ) = self.parse_url()
             print(id)
             if resource == "comments":
                 if id is not None:
@@ -65,10 +65,19 @@ class HandleRequests(BaseHTTPRequestHandler):
                     # response = get_single_animal(id)
                 else:
                     print("get all comments")
+
+            if resource == "posts":
+                if id is not None:
+                    response = get_single_post(id)
+                else:
+                    response = get_all_posts()
+
         else:         
             (resource, query, value) = self.parse_url()
             if resource == "comments" and query=="postId":
                 print("getCommentsByPostId(value)")
+
+        self.wfile.write(json.dumps(response).encode())
 
     def do_POST(self):
         """Make a post request to the server"""
