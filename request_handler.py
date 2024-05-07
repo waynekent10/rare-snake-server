@@ -1,8 +1,8 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
-
 from views.user import create_user, login_user
-from views import *
+from views.comment_requests import *
+from views.post_requests import *
 
 
 class HandleRequests(BaseHTTPRequestHandler):
@@ -52,8 +52,23 @@ class HandleRequests(BaseHTTPRequestHandler):
 
     def do_GET(self):
         """Handle Get requests to the server"""
-        self._set_headers(200)
         
+        self._set_headers(200)
+        response = {}
+        
+        if '?' not in self.path:
+            resource, id = self.parse_url()
+            print(id)
+            if resource == "comments":
+                if id is not None:
+                    print("get comments of post")
+                    # response = get_single_animal(id)
+                else:
+                    print("get all comments")
+        else:         
+            (resource, query, value) = self.parse_url()
+            if resource == "comments" and query=="postId":
+                print("getCommentsByPostId(value)")
 
     def do_POST(self):
         """Make a post request to the server"""
@@ -67,6 +82,8 @@ class HandleRequests(BaseHTTPRequestHandler):
             response = login_user(post_body)
         if resource == 'register':
             response = create_user(post_body)
+        if resource == 'comments':
+            response = json.dumps(create_comment(post_body))
 
         self.wfile.write(response.encode())
 
