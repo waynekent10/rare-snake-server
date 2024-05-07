@@ -1,1 +1,1 @@
-from .comment_requests import create_comment
+from .post_requests import *
