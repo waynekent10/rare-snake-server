@@ -2,6 +2,7 @@ from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
 
 from views.user import create_user, login_user
+from views import *
 
 
 class HandleRequests(BaseHTTPRequestHandler):
@@ -51,8 +52,8 @@ class HandleRequests(BaseHTTPRequestHandler):
 
     def do_GET(self):
         """Handle Get requests to the server"""
-        pass
-
+        self._set_headers(200)
+        
 
     def do_POST(self):
         """Make a post request to the server"""
