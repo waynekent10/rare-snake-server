@@ -1,7 +1,7 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
-
 from views.user import create_user, login_user
+from views.comment_requests import *
 
 
 class HandleRequests(BaseHTTPRequestHandler):
@@ -51,7 +51,10 @@ class HandleRequests(BaseHTTPRequestHandler):
 
     def do_GET(self):
         """Handle Get requests to the server"""
-        pass
+        self._set_headers(200)
+        response = {}
+        parsed = self.parse_url()
+        (resource, id) = parsed
 
 
     def do_POST(self):
@@ -61,11 +64,13 @@ class HandleRequests(BaseHTTPRequestHandler):
         post_body = json.loads(self.rfile.read(content_len))
         response = ''
         resource, _ = self.parse_url()
-
+        print(resource)
         if resource == 'login':
             response = login_user(post_body)
         if resource == 'register':
             response = create_user(post_body)
+        if resource == 'comments':
+            response = json.dumps(create_comment(post_body))
 
         self.wfile.write(response.encode())
 
