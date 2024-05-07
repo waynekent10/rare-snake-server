@@ -30,17 +30,18 @@
 --   FOREIGN KEY(`author_id`) REFERENCES `Users`(`id`)
 -- );
 
--- CREATE TABLE "Posts" (
---   "id" INTEGER PRIMARY KEY AUTOINCREMENT,
---   "user_id" INTEGER,
---   "category_id" INTEGER,
---   "title" varchar,
---   "publication_date" date,
---   "image_url" varchar,
---   "content" varchar,
---   "approved" bit,
---   FOREIGN KEY(`user_id`) REFERENCES `Users`(`id`)
--- );
+
+CREATE TABLE "Posts" (
+  "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+  "user_id" INTEGER,
+  "category_id" INTEGER,
+  "title" varchar,
+  "publication_date" date,
+  "image_url" varchar,
+  "content" varchar,
+  "approved" bit,
+  FOREIGN KEY(`user_id`) REFERENCES `Users`(`id`)
+);
 
 -- CREATE TABLE "Comments" (
 --   "id" INTEGER PRIMARY KEY AUTOINCREMENT,
