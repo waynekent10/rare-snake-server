@@ -78,6 +78,8 @@ class HandleRequests(BaseHTTPRequestHandler):
                 response = get_comments_of_post(value)
             if resource == "comments" and query=="authorId":
                 response = get_comments_of_user(value)
+            if resource == "posts" and query=="user_id":
+                response = get_posts_by_user(value)
 
         self.wfile.write(json.dumps(response).encode())
         
@@ -95,6 +97,8 @@ class HandleRequests(BaseHTTPRequestHandler):
             response = create_user(post_body)
         if resource == 'comments':
             response = json.dumps(create_comment(post_body))
+        if resource == "posts":
+            response = json.dumps(create_post(post_body))
 
         self.wfile.write(response.encode())
 
@@ -110,6 +114,8 @@ class HandleRequests(BaseHTTPRequestHandler):
         
         if resource == "comments":
             success = update_comment(id, post_body)
+        if resource == "posts":
+            success = update_post(id, post_body)
             
         if success:
             self._set_headers(204)
@@ -126,6 +132,8 @@ class HandleRequests(BaseHTTPRequestHandler):
         (resource, id) = self.parse_url()
         if resource == "comments":
             delete_comment(id)
+        if resource == "posts":
+            delete_post(id)
 
 
 def main():
