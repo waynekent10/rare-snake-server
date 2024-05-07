@@ -4,6 +4,7 @@ from views.user import create_user, login_user
 from views.comment_requests import *
 from views.post_requests import *
 from views.user_requests import *
+from views.tag_requests import *
 
 
 class HandleRequests(BaseHTTPRequestHandler):
@@ -78,6 +79,8 @@ class HandleRequests(BaseHTTPRequestHandler):
                     response = get_single_user(id)
                 else:
                     response = get_all_users()
+            if resource == "tags":
+                    response = get_single_tag(id)
 
         else:         
             (resource, query, value) = self.parse_url()
@@ -108,6 +111,8 @@ class HandleRequests(BaseHTTPRequestHandler):
             response = json.dumps(create_post(post_body))
         if resource == "users":
             response = json.dumps(create_user(post_body))
+        if resource == "tags":
+            response = json.dumps(create_tag(post_body))
 
         self.wfile.write(response.encode())
 
@@ -146,6 +151,8 @@ class HandleRequests(BaseHTTPRequestHandler):
             delete_post(id)
         if resource == "users":
             delete_user(id)
+        if resource == "tags":
+            delete_tag(id)
 
 
 def main():
