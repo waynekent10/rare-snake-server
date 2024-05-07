@@ -58,18 +58,16 @@ class HandleRequests(BaseHTTPRequestHandler):
         
         if '?' not in self.path:
             resource, id = self.parse_url()
-            print(id)
-            if resource == "comments":
-                if id is not None:
-                    print("get comments of post")
-                    # response = get_single_animal(id)
-                else:
-                    print("get all comments")
+            pass
         else:         
             (resource, query, value) = self.parse_url()
             if resource == "comments" and query=="postId":
-                print("getCommentsByPostId(value)")
+                response = get_comments_of_post(value)
+            if resource == "comments" and query=="authorId":
+                response = get_comments_of_user(value)
 
+        self.wfile.write(json.dumps(response).encode())
+        
     def do_POST(self):
         """Make a post request to the server"""
         self._set_headers(201)
@@ -89,11 +87,32 @@ class HandleRequests(BaseHTTPRequestHandler):
 
     def do_PUT(self):
         """Handles PUT requests to the server"""
-        pass
+        self._set_headers(204)
+        content_len = int(self.headers.get('content-length', 0))
+        post_body = self.rfile.read(content_len)
+        post_body = json.loads(post_body)
+        (resource, id) = self.parse_url()
+        
+        success = False
+        
+        if resource == "comments":
+            success = update_comment(id, post_body)
+            
+        if success:
+            self._set_headers(204)
+        else:
+            self._set_headers(404)
 
+        self.wfile.write("".encode())
+        
+        
     def do_DELETE(self):
         """Handle DELETE Requests"""
-        pass
+        self._set_headers(204)
+
+        (resource, id) = self.parse_url()
+        if resource == "comments":
+            delete_comment(id)
 
 
 def main():
