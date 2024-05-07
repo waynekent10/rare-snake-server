@@ -87,6 +87,8 @@ CREATE TABLE "Categories" (
 
 INSERT INTO Categories ('label') VALUES ('News');
 INSERT INTO Tags ('label') VALUES ('JavaScript');
+INSERT INTO Tags ('label') VALUES ('Python');
+INSERT INTO Tags ('label') VALUES ('Funny');
 INSERT INTO Reactions ('label', 'image_url') VALUES ('happy', 'https://pngtree.com/so/happy');
 
 INSERT INTO Posts ('user_id', 'category_id', 'title', 'publication_date', 'image_url', 'content') VALUES (
@@ -98,3 +100,7 @@ INSERT INTO Posts ('user_id', 'category_id', 'title', 'publication_date', 'image
 INSERT INTO Posts ('user_id', 'category_id', 'title', 'publication_date', 'image_url', 'content') VALUES (
 '1', '3', 'My Third Post', 20240505, 'https://pngtree.com/so/happy', 'this one is from the past'
 )
+
+INSERT INTO PostTags ('post_id', 'tag_id') VALUES (1, 2)
+INSERT INTO PostTags ('post_id', 'tag_id') VALUES (2, 3)
+INSERT INTO PostTags ('post_id', 'tag_id') VALUES (4, 3)
