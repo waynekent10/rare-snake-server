@@ -67,10 +67,25 @@
 --   FOREIGN KEY(`post_id`) REFERENCES `Posts`(`id`)
 -- );
 
+
+INSERT INTO Posts ('user_id', 'category_id', 'title', 'publication_date', 'image_url', 'content') VALUES (
+'1', '1', 'My First Post', 20240506, 'https://pngtree.com/so/happy', 'i hope this works'
+)
+INSERT INTO Posts ('user_id', 'category_id', 'title', 'publication_date', 'image_url', 'content') VALUES (
+'2', '2', 'My Second Post', 20240507, 'https://pngtree.com/so/happy', 'this one is from the future'
+)
+INSERT INTO Posts ('user_id', 'category_id', 'title', 'publication_date', 'image_url', 'content') VALUES (
+'1', '3', 'My Third Post', 20240505, 'https://pngtree.com/so/happy', 'this one is from the past'
+)
+INSERT INTO Posts ('user_id', 'category_id', 'title', 'publication_date', 'image_url', 'content') VALUES (
+'1', '1', 'My Delete Post', 20240505, 'https://pngtree.com/so/happy', 'this is to be deleted'
+)
+
 -- CREATE TABLE "Tags" (
 --   "id" INTEGER PRIMARY KEY AUTOINCREMENT,
 --   "label" varchar
 -- );
+
 
 -- CREATE TABLE "PostTags" (
 --   "id" INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -79,6 +94,15 @@
 --   FOREIGN KEY(`post_id`) REFERENCES `Posts`(`id`),
 --   FOREIGN KEY(`tag_id`) REFERENCES `Tags`(`id`)
 -- );
+
+
+INSERT INTO PostTags ('post_id', 'tag_id') VALUES (1, 2)
+INSERT INTO PostTags ('post_id', 'tag_id') VALUES (2, 3)
+INSERT INTO PostTags ('post_id', 'tag_id') VALUES (4, 3)
+INSERT INTO PostTags ('post_id', 'tag_id') VALUES (4, 2)
+INSERT INTO PostTags ('post_id', 'tag_id') VALUES (6, 1)
+INSERT INTO PostTags ('post_id', 'tag_id') VALUES (6, 2)
+INSERT INTO PostTags ('post_id', 'tag_id') VALUES (6, 3)
 
 -- CREATE TABLE "Categories" (
 --   "id" INTEGER PRIMARY KEY AUTOINCREMENT,
