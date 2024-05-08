@@ -3,6 +3,7 @@ import json
 from views.user import create_user, login_user
 from views.comment_requests import *
 from views.post_requests import *
+from views.subscriptions import *
 
 
 class HandleRequests(BaseHTTPRequestHandler):
@@ -71,6 +72,12 @@ class HandleRequests(BaseHTTPRequestHandler):
                     response = get_single_post(id)
                 else:
                     response = get_all_posts()
+            
+            if resource == "subscriptions":
+                if id is not None:
+                    response = get_single_subscription(id)
+                else:
+                    response = get_all_subscriptions()
 
         else:         
             (resource, query, value) = self.parse_url()
@@ -95,6 +102,8 @@ class HandleRequests(BaseHTTPRequestHandler):
             response = create_user(post_body)
         if resource == 'comments':
             response = json.dumps(create_comment(post_body))
+        if resource == 'subscription':
+            response = json.dumps(create_subscription(post_body))
 
         self.wfile.write(response.encode())
 

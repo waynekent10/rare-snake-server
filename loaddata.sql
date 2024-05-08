@@ -21,14 +21,15 @@
 -- );
 
 
--- CREATE TABLE "Subscriptions" (
---   "id" INTEGER PRIMARY KEY AUTOINCREMENT,
---   "follower_id" INTEGER,
---   "author_id" INTEGER,
---   "created_on" date,
---   FOREIGN KEY(`follower_id`) REFERENCES `Users`(`id`),
---   FOREIGN KEY(`author_id`) REFERENCES `Users`(`id`)
--- );
+CREATE TABLE "Subscriptions" (
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "follower_id" INTEGER,
+    "author_id" INTEGER,
+    "created_on" DATE,
+    FOREIGN KEY(`follower_id`) REFERENCES `Users`(`id`),
+    FOREIGN KEY(`author_id`) REFERENCES `Users`(`id`)
+);
+
 
 
 CREATE TABLE "Posts" (
@@ -98,3 +99,5 @@ INSERT INTO Posts ('user_id', 'category_id', 'title', 'publication_date', 'image
 INSERT INTO Posts ('user_id', 'category_id', 'title', 'publication_date', 'image_url', 'content') VALUES (
 '1', '3', 'My Third Post', 20240505, 'https://pngtree.com/so/happy', 'this one is from the past'
 )
+INSERT INTO Subscriptions ('follower_id', 'author_id', 'created_on') 
+VALUES ('123', '456', 20240507);
