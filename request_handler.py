@@ -164,6 +164,8 @@ class HandleRequests(BaseHTTPRequestHandler):
             delete_user(id)
         if resource == "tags":
             delete_tag(id)
+        if resource == "subscriptions":
+            delete_subscription(id)
 
 
 def main():
