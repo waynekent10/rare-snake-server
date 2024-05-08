@@ -59,11 +59,15 @@ def get_subscriptions_of_author(id):
             WHERE s.author_id = ?
             """, (id, ))
                     
-            data = db_cursor.fetchone()
-            
-            subscription = Subscription(data['id'], data["follower_id"], data["author_id"], data["created_on"])
+        subscriptions = []
 
-        return subscription.__dict__
+        dataset = db_cursor.fetchall()
+
+        for row in dataset:
+            subscription = Subscription(row['id'], row['follower_id'], row['author_id'], row['created_on'])
+            subscriptions.append(subscription.__dict__)
+
+        return subscriptions 
 
 def delete_subscription(id):
     with sqlite3.connect("./db.sqlite3") as conn:

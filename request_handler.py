@@ -78,6 +78,7 @@ class HandleRequests(BaseHTTPRequestHandler):
                     response = get_single_tag(id)
             if resource == "subscriptions":
                 if id is not None:
+                    print("getting sub of author", id)
                     response = get_subscriptions_of_author(id)
 
         else:         
