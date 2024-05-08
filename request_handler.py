@@ -4,6 +4,9 @@ from views.user import create_user, login_user
 from views.comment_requests import *
 from views.post_requests import *
 from views.subscriptions import *
+from views.user_requests import *
+from views.post_tag_requests import *
+from views.tag_requests import *
 
 
 class HandleRequests(BaseHTTPRequestHandler):
@@ -72,12 +75,21 @@ class HandleRequests(BaseHTTPRequestHandler):
                     response = get_single_post(id)
                 else:
                     response = get_all_posts()
-            
+
             if resource == "subscriptions":
                 if id is not None:
                     response = get_single_subscription(id)
                 else:
                     response = get_all_subscriptions()
+
+            if resource == "users":
+                if id is not None:
+                    response = get_single_user(id)
+                else:
+                    response = get_all_users()
+            if resource == "tags":
+                    response = get_single_tag(id)
+
 
         else:         
             (resource, query, value) = self.parse_url()
@@ -85,6 +97,8 @@ class HandleRequests(BaseHTTPRequestHandler):
                 response = get_comments_of_post(value)
             if resource == "comments" and query=="authorId":
                 response = get_comments_of_user(value)
+            if resource == "posts" and query=="user_id":
+                response = get_posts_by_user(value)
 
         self.wfile.write(json.dumps(response).encode())
         
@@ -104,12 +118,17 @@ class HandleRequests(BaseHTTPRequestHandler):
             response = json.dumps(create_comment(post_body))
         if resource == 'subscription':
             response = json.dumps(create_subscription(post_body))
+        if resource == "posts":
+            response = json.dumps(create_post(post_body))
+        if resource == "users":
+            response = json.dumps(create_user(post_body))
+        if resource == "tags":
+            response = json.dumps(create_tag(post_body))
 
         self.wfile.write(response.encode())
 
     def do_PUT(self):
         """Handles PUT requests to the server"""
-        self._set_headers(204)
         content_len = int(self.headers.get('content-length', 0))
         post_body = self.rfile.read(content_len)
         post_body = json.loads(post_body)
@@ -119,6 +138,10 @@ class HandleRequests(BaseHTTPRequestHandler):
         
         if resource == "comments":
             success = update_comment(id, post_body)
+        if resource == "posts":
+            success = update_post(id, post_body)
+        if resource == "users":
+            success = update_user(id, post_body)
             
         if success:
             self._set_headers(204)
@@ -135,6 +158,12 @@ class HandleRequests(BaseHTTPRequestHandler):
         (resource, id) = self.parse_url()
         if resource == "comments":
             delete_comment(id)
+        if resource == "posts":
+            delete_post(id)
+        if resource == "users":
+            delete_user(id)
+        if resource == "tags":
+            delete_tag(id)
 
 
 def main():

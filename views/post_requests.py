@@ -60,11 +60,11 @@ def create_post(new_post):
       
         db_cursor = conn.cursor()
         db_cursor.execute("""
-        INSERT INTO Post
+        INSERT INTO Posts
             ( user_id, category_id, title, publication_date, image_url, content )
         VALUES
             ( ?, ?, ?, ?, ?, ?);
-        """, (new_post['id'], new_post['user_id'], new_post['category_id'], new_post['title'], new_post['publication_date'], new_post['image_url'], new_post['content']), )
+        """, (new_post['user_id'], new_post['category_id'], new_post['title'], new_post['publication_date'], new_post['image_url'], new_post['content']), )
         
         id = db_cursor.lastrowid
         new_post['id'] = id
@@ -76,7 +76,7 @@ def delete_post(id):
       
         db_cursor = conn.cursor()
         db_cursor.execute("""
-        DELETE FROM Post
+        DELETE FROM Posts
         WHERE id = ?
         """, (id, ))
 
@@ -85,7 +85,7 @@ def update_post(id, new_post):
       
         db_cursor = conn.cursor()
         db_cursor.execute("""
-        UPDATE Post
+        UPDATE Posts
             SET
                 user_id = ?,
                 category_id = ?,
@@ -94,7 +94,7 @@ def update_post(id, new_post):
                 image_url = ?,
                 content = ?
         WHERE id = ?
-        """, (new_post['id'], new_post['user_id'], new_post['category_id'], new_post['title'], new_post['publication_date'], new_post['image_url'], new_post['content']), id, )
+        """, (new_post['user_id'], new_post['category_id'], new_post['title'], new_post['publication_date'], new_post['image_url'], new_post['content'], id, ))
         
         rows_affected = db_cursor.rowcount
         
@@ -118,7 +118,7 @@ def get_posts_by_user(user_id):
             p.publication_date,
             p.image_url,
             p.content
-        FROM Post p
+        FROM Posts p
         WHERE p.user_id = ?
         """, (user_id, ))
         

@@ -14,13 +14,13 @@ def login_user(user):
         json string: If the user was found will return valid boolean of True and the user's id as the token
                      If the user was not found will return valid boolean False
     """
-    with sqlite3.connect('./db.sqlite3') as conn:
+    with sqlite3.connect("./rare_snake.sqlite3") as conn:
         conn.row_factory = sqlite3.Row
         db_cursor = conn.cursor()
 
         db_cursor.execute("""
             select id, username
-            from Users
+            from users
             where username = ?
             and password = ?
         """, (user['username'], user['password']))
@@ -58,7 +58,7 @@ def get_all_users():
           u.profile_image_url,
           u.created_on,
           u. active
-      FROM user u
+      FROM users u
       """)
 
       users = []
@@ -92,7 +92,7 @@ def get_single_user(id):
           u.profile_image_url,
           u.created_on,
           u. active
-      FROM user u
+      FROM users u
       WHERE u.id = ?
       """, ( id, ))
 
@@ -112,36 +112,43 @@ def create_user(user):
     Returns:
         json string: Contains the token of the newly created user
     """
-    with sqlite3.connect('./db.sqlite3') as conn:
-        conn.row_factory = sqlite3.Row
-        db_cursor = conn.cursor()
+    try:
+        with sqlite3.connect("./rare_snake.sqlite3") as conn:
+            conn.row_factory = sqlite3.Row
+            db_cursor = conn.cursor()
 
-        db_cursor.execute("""
-        Insert into Users (first_name, last_name, username, email, password, bio, created_on, active) values (?, ?, ?, ?, ?, ?, ?, 1)
-        """, (
-            user['first_name'],
-            user['last_name'],
-            user['username'],
-            user['email'],
-            user['password'],
-            user['bio'],
-            datetime.now()
-        ))
+            db_cursor.execute("""
+            INSERT INTO users (first_name, last_name, username, email, password, bio, created_on, active)
+            VALUES (?, ?, ?, ?, ?, ?, ?, 1)
+            """, (
+                user['first_name'],
+                user['last_name'],
+                user['username'],
+                user['email'],
+                user['password'],
+                user['bio'],
+                datetime.now()
+            ))
 
-        id = db_cursor.lastrowid
+            id = db_cursor.lastrowid
 
+            return json.dumps({
+                'token': id,
+                'valid': True
+            })
+    except Exception as e:
+        print("Error:", e)
         return json.dumps({
-            'token': id,
-            'valid': True
+            'error': str(e),
+            'valid': False
         })
-
       
 # update user
 def update_user(id, new_user):
-      with sqlite3.connect('./db.sqlite3') as conn:
+      with sqlite3.connect("./rare_snake.sqlite3") as conn:
         db_cursor = conn.cursor()
         db_cursor.execute("""
-        UPDATE Users
+        UPDATE users
             SET
                 first_name = ?,
                 last_name = ?,
@@ -153,14 +160,14 @@ def update_user(id, new_user):
                 created_on = ?,
                 active = ?
         WHERE id = ?
-        """, (new_user['id'], new_user['first_name'], new_user['last_name'], new_user['email'], new_user['bio'], new_user['username'], new_user['password'], new_user['profile_image_url'], new_user['created_on'], new_user['active'], id, ))
+        """, (new_user['first_name'], new_user['last_name'], new_user['email'], new_user['bio'], new_user['username'], new_user['password'], new_user['profile_image_url'], new_user['created_on'], new_user['active'], id, ))
         
 # test for delete, although we may not want to delete a user in FE.
 def delete_user(id):
-        with sqlite3.connect('./db.sqlite3') as conn:
+        with sqlite3.connect("./rare_snake.sqlite3") as conn:
             db_cursor = conn.cursor()
             db_cursor.execute("""
-            DELETE FROM Users
+            DELETE FROM users
             WHERE id = ?
             """, (id,))
 
