@@ -5,6 +5,8 @@ from views.comment_requests import get_comments_of_user, get_comments_of_post, c
 from views.post_requests import get_single_post, get_posts_by_user, get_all_posts, create_post, update_post, delete_post
 from views.user_requests import get_all_users, get_single_user, update_user, delete_user
 from views.tag_requests import get_single_tag, create_tag, delete_tag
+from views.subscriptions import create_subscription, update_subscription, delete_subscription, get_subscriptions_of_author
+from views.post_tag_requests import get_poststags_by_postid, create_post_tag, delete_post_tag
 
 class HandleRequests(BaseHTTPRequestHandler):
     """Handles the requests to this server"""
@@ -72,9 +74,11 @@ class HandleRequests(BaseHTTPRequestHandler):
                     response = get_single_user(id)
                 else:
                     response = get_all_users()
-
             if resource == "tags":
                     response = get_single_tag(id)
+            if resource == "subscriptions":
+                if id is not None:
+                    response = get_subscriptions_of_author(id)
 
         else:         
             (resource, query, value) = self.parse_url()
