@@ -21,76 +21,52 @@
 -- );
 
 
-CREATE TABLE "Subscriptions" (
-    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
-    "follower_id" INTEGER,
-    "author_id" INTEGER,
-    "created_on" DATE,
-    FOREIGN KEY(`follower_id`) REFERENCES `Users`(`id`),
-    FOREIGN KEY(`author_id`) REFERENCES `Users`(`id`)
-);
-
-
-
-CREATE TABLE "Posts" (
-  "id" INTEGER PRIMARY KEY AUTOINCREMENT,
-  "user_id" INTEGER,
-  "category_id" INTEGER,
-  "title" varchar,
-  "publication_date" date,
-  "image_url" varchar,
-  "content" varchar,
-  FOREIGN KEY(`user_id`) REFERENCES `Users`(`id`)
-);
-
-CREATE TABLE "Comments" (
-  "id" INTEGER PRIMARY KEY AUTOINCREMENT,
-  "post_id" INTEGER,
-  "author_id" INTEGER,
-  "content" varchar,
-  FOREIGN KEY(`post_id`) REFERENCES `Posts`(`id`),
-  FOREIGN KEY(`author_id`) REFERENCES `Users`(`id`)
-);
-
--- CREATE TABLE "Reactions" (
+-- CREATE TABLE "Subscriptions" (
 --   "id" INTEGER PRIMARY KEY AUTOINCREMENT,
---   "label" varchar,
---   "image_url" varchar
+--   "follower_id" INTEGER,
+--   "author_id" INTEGER,
+--   "created_on" date,
+--   FOREIGN KEY(`follower_id`) REFERENCES `Users`(`id`),
+--   FOREIGN KEY(`author_id`) REFERENCES `Users`(`id`)
 -- );
 
-CREATE TABLE "PostReactions" (
-  "id" INTEGER PRIMARY KEY AUTOINCREMENT,
-  "user_id" INTEGER,
-  "reaction_id" INTEGER,
-  "post_id" INTEGER,
-  FOREIGN KEY(`user_id`) REFERENCES `Users`(`id`),
-  FOREIGN KEY(`reaction_id`) REFERENCES `Reactions`(`id`),
-  FOREIGN KEY(`post_id`) REFERENCES `Posts`(`id`)
-);
 
-CREATE TABLE "Tags" (
-  "id" INTEGER PRIMARY KEY AUTOINCREMENT,
-  "label" varchar
-);
+-- CREATE TABLE "Posts" (
+--   "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+--   "user_id" INTEGER,
+--   "category_id" INTEGER,
+--   "title" varchar,
+--   "publication_date" date,
+--   "image_url" varchar,
+--   "content" varchar,
+--   FOREIGN KEY(`user_id`) REFERENCES `Users`(`id`)
+-- );
 
-CREATE TABLE "PostTags" (
-  "id" INTEGER PRIMARY KEY AUTOINCREMENT,
-  "post_id" INTEGER,
-  "tag_id" INTEGER,
-  FOREIGN KEY(`post_id`) REFERENCES `Posts`(`id`),
-  FOREIGN KEY(`tag_id`) REFERENCES `Tags`(`id`)
-);
+-- CREATE TABLE "Comments" (
+--   "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+--   "post_id" INTEGER,
+--   "author_id" INTEGER,
+--   "content" varchar,
+--   FOREIGN KEY(`post_id`) REFERENCES `Posts`(`id`),
+--   FOREIGN KEY(`author_id`) REFERENCES `Users`(`id`)
+-- );
 
-CREATE TABLE "Categories" (
-  "id" INTEGER PRIMARY KEY AUTOINCREMENT,
-  "label" varchar
-);
+-- -- CREATE TABLE "Reactions" (
+-- --   "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+-- --   "label" varchar,
+-- --   "image_url" varchar
+-- -- );
 
-INSERT INTO Categories ('label') VALUES ('News');
-INSERT INTO Tags ('label') VALUES ('JavaScript');
-INSERT INTO Tags ('label') VALUES ('Python');
-INSERT INTO Tags ('label') VALUES ('Funny');
-INSERT INTO Reactions ('label', 'image_url') VALUES ('happy', 'https://pngtree.com/so/happy');
+-- CREATE TABLE "PostReactions" (
+--   "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+--   "user_id" INTEGER,
+--   "reaction_id" INTEGER,
+--   "post_id" INTEGER,
+--   FOREIGN KEY(`user_id`) REFERENCES `Users`(`id`),
+--   FOREIGN KEY(`reaction_id`) REFERENCES `Reactions`(`id`),
+--   FOREIGN KEY(`post_id`) REFERENCES `Posts`(`id`)
+-- );
+
 
 INSERT INTO Posts ('user_id', 'category_id', 'title', 'publication_date', 'image_url', 'content') VALUES (
 '1', '1', 'My First Post', 20240506, 'https://pngtree.com/so/happy', 'i hope this works'
@@ -101,11 +77,50 @@ INSERT INTO Posts ('user_id', 'category_id', 'title', 'publication_date', 'image
 INSERT INTO Posts ('user_id', 'category_id', 'title', 'publication_date', 'image_url', 'content') VALUES (
 '1', '3', 'My Third Post', 20240505, 'https://pngtree.com/so/happy', 'this one is from the past'
 )
+INSERT INTO Posts ('user_id', 'category_id', 'title', 'publication_date', 'image_url', 'content') VALUES (
+'1', '1', 'My Delete Post', 20240505, 'https://pngtree.com/so/happy', 'this is to be deleted'
+)
 
-INSERT INTO Subscriptions ('follower_id', 'author_id', 'created_on') 
-VALUES ('123', '456', 20240507);
+-- CREATE TABLE "Tags" (
+--   "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+--   "label" varchar
+-- );
+
+
+-- CREATE TABLE "PostTags" (
+--   "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+--   "post_id" INTEGER,
+--   "tag_id" INTEGER,
+--   FOREIGN KEY(`post_id`) REFERENCES `Posts`(`id`),
+--   FOREIGN KEY(`tag_id`) REFERENCES `Tags`(`id`)
+-- );
+
 
 INSERT INTO PostTags ('post_id', 'tag_id') VALUES (1, 2)
 INSERT INTO PostTags ('post_id', 'tag_id') VALUES (2, 3)
 INSERT INTO PostTags ('post_id', 'tag_id') VALUES (4, 3)
+INSERT INTO PostTags ('post_id', 'tag_id') VALUES (4, 2)
+INSERT INTO PostTags ('post_id', 'tag_id') VALUES (6, 1)
+INSERT INTO PostTags ('post_id', 'tag_id') VALUES (6, 2)
+INSERT INTO PostTags ('post_id', 'tag_id') VALUES (6, 3)
 
+-- CREATE TABLE "Categories" (
+--   "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+--   "label" varchar
+-- );
+
+-- INSERT INTO Categories ('label') VALUES ('News');
+-- INSERT INTO Tags ('label') VALUES ('JavaScript');
+-- INSERT INTO Reactions ('label', 'image_url') VALUES ('happy', 'https://pngtree.com/so/happy');
+
+-- INSERT INTO Posts ('user_id', 'category_id', 'title', 'publication_date', 'image_url', 'content') VALUES (
+-- '1', '1', 'My First Post', 20240506, 'https://pngtree.com/so/happy', 'i hope this works'
+-- )
+-- INSERT INTO Posts ('user_id', 'category_id', 'title', 'publication_date', 'image_url', 'content') VALUES (
+-- '2', '2', 'My Second Post', 20240507, 'https://pngtree.com/so/happy', 'this one is from the future'
+-- )
+-- INSERT INTO Posts ('user_id', 'category_id', 'title', 'publication_date', 'image_url', 'content') VALUES (
+-- '1', '3', 'My Third Post', 20240505, 'https://pngtree.com/so/happy', 'this one is from the past'
+-- )
+
+-- DELETE FROM Comments WHERE post_id = 1;

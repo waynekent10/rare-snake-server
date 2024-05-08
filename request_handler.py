@@ -1,13 +1,10 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
 from views.user import create_user, login_user
-from views.comment_requests import *
-from views.post_requests import *
-from views.subscriptions import *
-from views.user_requests import *
-from views.post_tag_requests import *
-from views.tag_requests import *
-
+from views.comment_requests import get_comments_of_user, get_comments_of_post, create_comment, update_comment, delete_comment
+from views.post_requests import get_single_post, get_posts_by_user, get_all_posts, create_post, update_post, delete_post
+from views.user_requests import get_all_users, get_single_user, update_user, delete_user
+from views.tag_requests import get_single_tag, create_tag, delete_tag
 
 class HandleRequests(BaseHTTPRequestHandler):
     """Handles the requests to this server"""
@@ -61,35 +58,23 @@ class HandleRequests(BaseHTTPRequestHandler):
         response = {}
         
         if '?' not in self.path:
+            
             ( resource, id ) = self.parse_url()
-            print(id)
-            if resource == "comments":
-                if id is not None:
-                    print("get comments of post")
-                    # response = get_single_animal(id)
-                else:
-                    print("get all comments")
 
             if resource == "posts":
                 if id is not None:
                     response = get_single_post(id)
                 else:
                     response = get_all_posts()
-
-            if resource == "subscriptions":
-                if id is not None:
-                    response = get_single_subscription(id)
-                else:
-                    response = get_all_subscriptions()
-
+                
             if resource == "users":
                 if id is not None:
                     response = get_single_user(id)
                 else:
                     response = get_all_users()
+
             if resource == "tags":
                     response = get_single_tag(id)
-
 
         else:         
             (resource, query, value) = self.parse_url()
@@ -99,6 +84,8 @@ class HandleRequests(BaseHTTPRequestHandler):
                 response = get_comments_of_user(value)
             if resource == "posts" and query=="user_id":
                 response = get_posts_by_user(value)
+            if resource == "post_tags" and query=="post_id":
+                response = get_poststags_by_postid(value)
 
         self.wfile.write(json.dumps(response).encode())
         
@@ -124,6 +111,8 @@ class HandleRequests(BaseHTTPRequestHandler):
             response = json.dumps(create_user(post_body))
         if resource == "tags":
             response = json.dumps(create_tag(post_body))
+        if resource == "post_tags":
+            response = json.dumps(create_post_tag(post_body))
 
         self.wfile.write(response.encode())
 
@@ -168,6 +157,9 @@ class HandleRequests(BaseHTTPRequestHandler):
             delete_tag(id)
         if resource == "subscriptions":
             delete_subscription(id)
+
+        if resource == "post_tags":
+            delete_post_tag(id)
 
 
 def main():
