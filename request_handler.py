@@ -4,8 +4,8 @@ from views.user import create_user, login_user
 from views.comment_requests import *
 from views.post_requests import *
 from views.user_requests import *
+from views.post_tag_requests import *
 from views.tag_requests import *
-
 
 class HandleRequests(BaseHTTPRequestHandler):
     """Handles the requests to this server"""
