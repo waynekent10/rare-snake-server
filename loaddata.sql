@@ -21,14 +21,15 @@
 -- );
 
 
--- CREATE TABLE "Subscriptions" (
---   "id" INTEGER PRIMARY KEY AUTOINCREMENT,
---   "follower_id" INTEGER,
---   "author_id" INTEGER,
---   "created_on" date,
---   FOREIGN KEY(`follower_id`) REFERENCES `Users`(`id`),
---   FOREIGN KEY(`author_id`) REFERENCES `Users`(`id`)
--- );
+CREATE TABLE "Subscriptions" (
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "follower_id" INTEGER,
+    "author_id" INTEGER,
+    "created_on" DATE,
+    FOREIGN KEY(`follower_id`) REFERENCES `Users`(`id`),
+    FOREIGN KEY(`author_id`) REFERENCES `Users`(`id`)
+);
+
 
 
 CREATE TABLE "Posts" (
@@ -104,6 +105,9 @@ INSERT INTO Posts ('user_id', 'category_id', 'title', 'publication_date', 'image
 '1', '1', 'My Delete Post', 20240505, 'https://pngtree.com/so/happy', 'this is to be deleted'
 )
 
+INSERT INTO Subscriptions ('follower_id', 'author_id', 'created_on') 
+VALUES ('123', '456', 20240507);
+
 INSERT INTO PostTags ('post_id', 'tag_id') VALUES (1, 2)
 INSERT INTO PostTags ('post_id', 'tag_id') VALUES (2, 3)
 INSERT INTO PostTags ('post_id', 'tag_id') VALUES (4, 3)
@@ -111,3 +115,4 @@ INSERT INTO PostTags ('post_id', 'tag_id') VALUES (4, 2)
 INSERT INTO PostTags ('post_id', 'tag_id') VALUES (6, 1)
 INSERT INTO PostTags ('post_id', 'tag_id') VALUES (6, 2)
 INSERT INTO PostTags ('post_id', 'tag_id') VALUES (6, 3)
+
