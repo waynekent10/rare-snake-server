@@ -103,6 +103,8 @@ class HandleRequests(BaseHTTPRequestHandler):
             response = create_user(post_body)
         if resource == 'comments':
             response = json.dumps(create_comment(post_body))
+        if resource == 'subscriptions':
+            response = json.dumps(create_subscription(post_body))
         if resource == "posts":
             response = json.dumps(create_post(post_body))
         if resource == "users":
@@ -129,6 +131,8 @@ class HandleRequests(BaseHTTPRequestHandler):
             success = update_post(id, post_body)
         if resource == "users":
             success = update_user(id, post_body)
+        if resource == "subscriptions":
+            success = update_subscription(id, post_body)
             
         if success:
             self._set_headers(204)
@@ -151,6 +155,8 @@ class HandleRequests(BaseHTTPRequestHandler):
             delete_user(id)
         if resource == "tags":
             delete_tag(id)
+        if resource == "subscriptions":
+            delete_subscription(id)
 
         if resource == "post_tags":
             delete_post_tag(id)

@@ -48,26 +48,28 @@ def create_subscription(new_subscription):
         return new_subscription
 
 def get_single_subscription(id):
-        with sqlite3.connect("./db.sqlite3") as conn:
-      
-            conn.row_factory = sqlite3.Row
-            db_cursor = conn.cursor()
-        
-            db_cursor.execute("""
-            SELECT
-                s.id,
-                s.follower_id,
-                s.author_id,
-                s.created_on
-            FROM Subscriptions s
-            WHERE p.id = ?
-            """, (id, ))
-                    
-            data = db_cursor.fetchone()
-            
-            subscription = Subscription(data['id'], data['user_id'], data['category_id'], data['title'], data['publication_date'], data['image_url'], data['content'])
+    with sqlite3.connect("./db.sqlite3") as conn:
+        conn.row_factory = sqlite3.Row
+        db_cursor = conn.cursor()
 
-        return subscription.__dict__
+        db_cursor.execute("""
+        SELECT
+            s.id,
+            s.follower_id,
+            s.author_id,
+            s.created_on
+        FROM Subscriptions s
+        WHERE s.id = ?
+        """, (id,))
+
+        data = db_cursor.fetchone()
+
+        if data:
+            subscription = Subscription(data['id'], data['follower_id'], data['author_id'], data['created_on'])
+            return subscription.__dict__
+        else:
+            return None
+
 
 def delete_subscription(id):
     with sqlite3.connect("./db.sqlite3") as conn:
@@ -89,16 +91,12 @@ def update_subscription(id, new_subscription):
                 author_id = ?,
                 created_on = ?
         WHERE id = ?
-        """, (new_subscription['id'], new_subscription['follower_id'],
-              new_subscription['author_id'], new_subscription['created_on'], id, ))
+        """, (new_subscription['follower_id'], new_subscription['author_id'], new_subscription['created_on'], id))
 
-        # Were any rows affected?
-        # Did the client send an `id` that exists?
         rows_affected = db_cursor.rowcount
 
-    # return value of this function
     if rows_affected == 0:
-
         return False
     else:
         return True
+
