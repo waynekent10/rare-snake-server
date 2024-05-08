@@ -1,9 +1,8 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
-from views.user import create_user, login_user
 from views.comment_requests import get_comments_of_user, get_comments_of_post, create_comment, update_comment, delete_comment
 from views.post_requests import get_single_post, get_posts_by_user, get_all_posts, create_post, update_post, delete_post
-from views.user_requests import get_all_users, get_single_user, update_user, delete_user
+from views.user_requests import get_all_users, get_single_user, update_user, delete_user, create_user
 from views.tag_requests import get_single_tag, create_tag, delete_tag
 
 class HandleRequests(BaseHTTPRequestHandler):
