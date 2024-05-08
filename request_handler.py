@@ -3,9 +3,11 @@ import json
 from views.user import create_user, login_user
 from views.comment_requests import *
 from views.post_requests import *
+from views.subscriptions import *
 from views.user_requests import *
 from views.post_tag_requests import *
 from views.tag_requests import *
+
 
 class HandleRequests(BaseHTTPRequestHandler):
     """Handles the requests to this server"""
@@ -73,7 +75,13 @@ class HandleRequests(BaseHTTPRequestHandler):
                     response = get_single_post(id)
                 else:
                     response = get_all_posts()
-                
+
+            if resource == "subscriptions":
+                if id is not None:
+                    response = get_single_subscription(id)
+                else:
+                    response = get_all_subscriptions()
+
             if resource == "users":
                 if id is not None:
                     response = get_single_user(id)
@@ -81,6 +89,7 @@ class HandleRequests(BaseHTTPRequestHandler):
                     response = get_all_users()
             if resource == "tags":
                     response = get_single_tag(id)
+
 
         else:         
             (resource, query, value) = self.parse_url()
@@ -107,6 +116,8 @@ class HandleRequests(BaseHTTPRequestHandler):
             response = create_user(post_body)
         if resource == 'comments':
             response = json.dumps(create_comment(post_body))
+        if resource == 'subscription':
+            response = json.dumps(create_subscription(post_body))
         if resource == "posts":
             response = json.dumps(create_post(post_body))
         if resource == "users":
