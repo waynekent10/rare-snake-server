@@ -90,6 +90,8 @@ class HandleRequests(BaseHTTPRequestHandler):
                 response = get_comments_of_user(value)
             if resource == "posts" and query=="user_id":
                 response = get_posts_by_user(value)
+            if resource == "post_tags" and query=="post_id":
+                response = get_poststags_by_postid(value)
 
         self.wfile.write(json.dumps(response).encode())
         
@@ -113,6 +115,8 @@ class HandleRequests(BaseHTTPRequestHandler):
             response = json.dumps(create_user(post_body))
         if resource == "tags":
             response = json.dumps(create_tag(post_body))
+        if resource == "post_tags":
+            response = json.dumps(create_post_tag(post_body))
 
         self.wfile.write(response.encode())
 
@@ -153,7 +157,8 @@ class HandleRequests(BaseHTTPRequestHandler):
             delete_user(id)
         if resource == "tags":
             delete_tag(id)
-
+        if resource == "post_tags":
+            delete_post_tag(id)
 
 def main():
     """Starts the server on port 8088 using the HandleRequests class

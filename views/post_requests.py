@@ -79,6 +79,11 @@ def delete_post(id):
         DELETE FROM Posts
         WHERE id = ?
         """, (id, ))
+        db_cursor.execute("""
+        DELETE FROM PostTags
+        WHERE post_id = ?
+        """, (id, ))
+        
 
 def update_post(id, new_post):
     with sqlite3.connect("./db.sqlite3") as conn:
