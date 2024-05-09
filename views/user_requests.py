@@ -14,7 +14,7 @@ def login_user(user):
         json string: If the user was found will return valid boolean of True and the user's id as the token
                      If the user was not found will return valid boolean False
     """
-    with sqlite3.connect("./rare_snake.sqlite3") as conn:
+    with sqlite3.connect("./db.sqlite3") as conn:
         conn.row_factory = sqlite3.Row
         db_cursor = conn.cursor()
 
@@ -41,7 +41,7 @@ def login_user(user):
 
 # get users
 def get_all_users():
-    with sqlite3.connect("./rare_snake.sqlite3") as conn:
+    with sqlite3.connect("./db.sqlite3") as conn:
 
       conn.row_factory = sqlite3.Row
       db_cursor = conn.cursor()
@@ -75,7 +75,7 @@ def get_all_users():
 
 # get single user
 def get_single_user(id):
-    with sqlite3.connect("./rare_snake.sqlite3") as conn:
+    with sqlite3.connect("./db.sqlite3") as conn:
 
       conn.row_factory = sqlite3.Row
       db_cursor = conn.cursor()
@@ -113,7 +113,7 @@ def create_user(user):
         json string: Contains the token of the newly created user
     """
     try:
-        with sqlite3.connect("./rare_snake.sqlite3") as conn:
+        with sqlite3.connect("./db.sqlite3") as conn:
             conn.row_factory = sqlite3.Row
             db_cursor = conn.cursor()
 
@@ -145,7 +145,7 @@ def create_user(user):
       
 # update user
 def update_user(id, new_user):
-      with sqlite3.connect("./rare_snake.sqlite3") as conn:
+      with sqlite3.connect("./db.sqlite3") as conn:
         db_cursor = conn.cursor()
         db_cursor.execute("""
         UPDATE users
@@ -164,7 +164,7 @@ def update_user(id, new_user):
         
 # test for delete, although we may not want to delete a user in FE.
 def delete_user(id):
-        with sqlite3.connect("./rare_snake.sqlite3") as conn:
+        with sqlite3.connect("./db.sqlite3") as conn:
             db_cursor = conn.cursor()
             db_cursor.execute("""
             DELETE FROM users
