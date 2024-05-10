@@ -6,3 +6,4 @@ from .post_tag import PostTag
 from .tag import Tag
 from .user import User
 from .subscription import Subscription
+from .category import Category

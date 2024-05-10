@@ -6,6 +6,7 @@ from views.user_requests import get_all_users, get_single_user, update_user, del
 from views.tag_requests import get_single_tag, create_tag, delete_tag
 from views.subscriptions import create_subscription, update_subscription, delete_subscription, get_subscriptions_of_author
 from views.post_tag_requests import get_poststags_by_postid, create_post_tag, delete_post_tag
+from views.category_requests import get_all_categories, create_category
 
 class HandleRequests(BaseHTTPRequestHandler):
     """Handles the requests to this server"""
@@ -77,8 +78,13 @@ class HandleRequests(BaseHTTPRequestHandler):
                     response = get_single_tag(id)
             if resource == "subscriptions":
                 if id is not None:
-                    print("getting sub of author", id)
                     response = get_subscriptions_of_author(id)
+            if resource == "categories":
+                if id is not None:
+                    pass
+                else:
+                    response = get_all_categories()
+            
 
         else:         
             (resource, query, value) = self.parse_url()
@@ -117,6 +123,8 @@ class HandleRequests(BaseHTTPRequestHandler):
             response = json.dumps(create_tag(post_body))
         if resource == "post_tags":
             response = json.dumps(create_post_tag(post_body))
+        if resource == 'categories':
+            response = json.dumps(create_category(post_body))
 
         self.wfile.write(response.encode())
 
