@@ -20,7 +20,8 @@ def create_tag(new_tag):
 
 def get_all_tags():
     with sqlite3.connect("./db.sqlite3") as conn:
-      
+        
+        print("getting all tags")
         conn.row_factory = sqlite3.Row
         db_cursor = conn.cursor()
         

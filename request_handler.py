@@ -75,9 +75,10 @@ class HandleRequests(BaseHTTPRequestHandler):
                     response = get_all_users()
             if resource == "tags":
                 if id is not None:
-                    response = get_all_tags()
-                else:
                     response = get_single_tag(id)
+                    print()
+                else:
+                    response = get_all_tags()
             if resource == "subscriptions":
                 if id is not None:
                     response = get_subscriptions_of_author(id)
