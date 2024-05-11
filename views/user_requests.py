@@ -101,6 +101,25 @@ def get_single_user(id):
       user = User(data['id'], data['first_name'], data['last_name'], data['email'], data['bio'], data['username'], data['password'], data['profile_image_url'], data['created_on'], data['active'])
 
       return user.__dict__
+    
+def get_id_of_user(username):
+    with sqlite3.connect("./db.sqlite3") as conn:
+        print(username)
+        conn.row_factory = sqlite3.Row
+        db_cursor = conn.cursor()
+
+        db_cursor.execute("""
+        SELECT
+        *
+        FROM users u
+        WHERE u.username = ?
+        """, ( username, ))
+        print('yayayay')
+        data = db_cursor.fetchone()
+
+        user = User(data['id'], data['first_name'], data['last_name'], data['email'], data['bio'], data['username'], data['password'], data['profile_image_url'], data['created_on'], data['active'])
+        print('output:', user.__dict__)
+        return user.__dict__
 
 # create user ( there is a create user function in the user.py file)
 def create_user(user):

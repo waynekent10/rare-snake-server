@@ -1,6 +1,5 @@
 from models import Tag
 import sqlite3
-import json
 
 def create_tag(new_tag):
     with sqlite3.connect("./db.sqlite3") as conn:
@@ -18,6 +17,30 @@ def create_tag(new_tag):
         new_tag['id'] = id
 
     return new_tag
+
+def get_all_tags():
+    with sqlite3.connect("./db.sqlite3") as conn:
+        
+        print("getting all tags")
+        conn.row_factory = sqlite3.Row
+        db_cursor = conn.cursor()
+        
+        db_cursor.execute("""
+        SELECT
+        *
+        FROM Tags t
+        """)
+        
+        tags = []
+        
+        dataset = db_cursor.fetchall()
+        
+        for row in dataset:
+            tag = Tag(row['id'], row['label'])
+
+            tags.append(tag.__dict__)
+
+    return tags
 
 def get_single_tag(tag_id):
     with sqlite3.connect("./db.sqlite3") as conn:
