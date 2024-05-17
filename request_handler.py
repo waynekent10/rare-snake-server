@@ -7,6 +7,7 @@ from views.tag_requests import get_single_tag, create_tag, delete_tag, get_all_t
 from views.subscriptions import create_subscription, update_subscription, delete_subscription, get_subscriptions_of_author
 from views.post_tag_requests import get_poststags_by_postid, create_post_tag, delete_post_tag
 from views.category_requests import get_all_categories, create_category
+from views.post_reactions import create_post_reaction, delete_post_reaction, get_reactions_of_post, get_users_reactions_of_post
 
 class HandleRequests(BaseHTTPRequestHandler):
     """Handles the requests to this server"""
@@ -87,7 +88,8 @@ class HandleRequests(BaseHTTPRequestHandler):
                     pass
                 else:
                     response = get_all_categories()
-            
+            if resource == "post_reactions":
+                    response = get_reactions_of_post(id)
         else:         
             (resource, query, value) = self.parse_url()
             if resource == "comments" and query=="postId":
@@ -100,6 +102,11 @@ class HandleRequests(BaseHTTPRequestHandler):
                 response = get_poststags_by_postid(value)
             if resource == "users" and query =="username":
                 response = get_id_of_user(value)
+            if resource == "post_reactions" and query == "postId_userId":
+                print('this one')
+                split = value.split('&')
+                response = get_users_reactions_of_post(int(split[0]), int(split[1]))
+
 
         self.wfile.write(json.dumps(response).encode())
         
@@ -129,6 +136,8 @@ class HandleRequests(BaseHTTPRequestHandler):
             response = json.dumps(create_post_tag(post_body))
         if resource == 'categories':
             response = json.dumps(create_category(post_body))
+        if resource == "post_reactions":
+            response = json.dumps(create_post_reaction(post_body))
 
         self.wfile.write(response.encode())
 
@@ -173,9 +182,10 @@ class HandleRequests(BaseHTTPRequestHandler):
             delete_tag(id)
         if resource == "subscriptions":
             delete_subscription(id)
-
         if resource == "post_tags":
             delete_post_tag(id)
+        if resource == "post_reactions":
+            delete_post_reaction(id)
 
 
 def main():
