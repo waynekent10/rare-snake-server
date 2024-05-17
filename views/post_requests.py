@@ -50,7 +50,7 @@ def get_single_post(id):
         """, (id, ))
                 
         data = db_cursor.fetchone()
-        
+            
         post = Post(data['id'], data['user_id'], data['category_id'], data['title'], data['publication_date'], data['image_url'], data['content'])
 
     return post.__dict__

@@ -125,7 +125,9 @@
 
 -- -- DELETE FROM Comments WHERE post_id = 1;
 
-        SELECT
-        *
-        FROM users u
-        WHERE u.username = 'max69420'
+        -- SELECT
+        -- *
+        -- FROM users u
+        -- WHERE u.username = 'max69420'
+
+        DELETE FROM PostReactions
